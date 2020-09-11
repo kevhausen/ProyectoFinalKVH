@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 /*aca quiero guardar lo que viene desde retrofit directo a la base de datos, para eso tengo que:
 1.- instanciar retrofit para usar su metodo que hace el "fetch" a la api
 2.- instanciar base de datos para poder usar el dao, el cual tiene la funcion "insert" y "mostrar movies"
@@ -26,14 +25,12 @@ class MovieRepo(context:Context) {
     private val db=PopularMovieDB.getMovieDB(context)
     private val dao=db.daoPopularMovie()
 
-
     fun InsertWebDataToDB(){
         retrofit.moviePopular().enqueue(object : Callback<MoviePopular>{
             override fun onResponse(call: Call<MoviePopular>, response: Response<MoviePopular>) {
                 response.body()?.let {
                     CoroutineScope(IO).launch {
                         dao.insertPopularMoviesInDB(it)
-                        Log.d("kevin insertando",it.toString())
                     }
                 }
             }
@@ -47,6 +44,5 @@ class MovieRepo(context:Context) {
     fun getPopularMoviesFromDB():LiveData<MoviePopular>{
         return dao.getPopularMoviesFromDB()
     }
-
 
 }

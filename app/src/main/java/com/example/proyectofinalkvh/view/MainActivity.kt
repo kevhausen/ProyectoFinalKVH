@@ -4,19 +4,30 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.proyectofinalkvh.R
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
 import com.example.proyectofinalkvh.model.retrofit.IMAGE_BASE_URL
 import com.example.proyectofinalkvh.model.retrofit.RetrofitClient
 import com.example.proyectofinalkvh.viewmodel.MovieVM
+import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Response
 import javax.security.auth.callback.Callback
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var movieVM:MovieVM
+    private lateinit var movieAdapter: MovieAdapter
         override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+            movieVM=ViewModelProvider(this).get(MovieVM::class.java)
+            supportFragmentManager.beginTransaction().addToBackStack("popular").replace(R.id.frameLayout,PopularMovieFragment.newInstance(this)).commit()
+
+
+
+
+
 
         //PRUEBA PARA OBTENER DATOS DE API, HACIENDO LLAMDA A RETROFIT DESDE MAIN CAREPALO
         /*RetrofitClient.getRetrofitClientInstance().moviePopular().
@@ -33,11 +44,13 @@ class MainActivity : AppCompatActivity() {
 
         })*/
             //PRUEBA PARA OBTENER DATOS DE DB, HACIENDO LLAMADA A VIEWMODEL
-            val movieVM=ViewModelProvider(this).get(MovieVM::class.java)
+            /*val movieVM=ViewModelProvider(this).get(MovieVM::class.java)
             movieVM.getPopularMovies().observe(this,{
                 Log.d("kevin VM",it.toString())
 
-            })
+            })*/
+
+
 
     }
 }
