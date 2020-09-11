@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface MovieAPI {
 
     //dejar api como constante cada vez que se llame a la funcion groupList
-    @GET("/movie/{movie_id}")
+    @GET("movie/{movie_id}")
     fun movieDetails(@Path("movie_id") movieId: Int): Call<MutableList<MovieDetails?>?>?
 
     @GET("movie/popular")

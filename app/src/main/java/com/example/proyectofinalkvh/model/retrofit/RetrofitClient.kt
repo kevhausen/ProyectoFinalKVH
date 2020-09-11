@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit
 
 const val API_KEY="0b58f5bbe43507bdf4cb53f4b646e940"
 const val BASE_URL="https://api.themoviedb.org/3/"
+const val IMAGE_BASE_URL="https://image.tmdb.org/t/p/w342" //este luego se concatena a cada imagen que se setee en el adapter
 
 //object es parecido a companion object
 object RetrofitClient {
