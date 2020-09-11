@@ -4,8 +4,9 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
+import com.example.proyectofinalkvh.model.dataclass.moviedetails.MovieDetails
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
-import com.example.proyectofinalkvh.model.db.PopularMovieDB
+import com.example.proyectofinalkvh.model.db.MovieDB
 import com.example.proyectofinalkvh.model.retrofit.RetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -22,7 +23,7 @@ import retrofit2.Response
 class MovieRepo(context:Context) {
     private val mContext=context
     private val retrofit=RetrofitClient.getRetrofitClientInstance()
-    private val db=PopularMovieDB.getMovieDB(context)
+    private val db=MovieDB.getMovieDB(context)
     private val dao=db.daoPopularMovie()
 
     fun InsertWebDataToDB(){
@@ -43,6 +44,27 @@ class MovieRepo(context:Context) {
 
     fun getPopularMoviesFromDB():LiveData<MoviePopular>{
         return dao.getPopularMoviesFromDB()
+    }
+
+    //TODO el id viene al hacerle click al recycler del fragment, parece que se manda para aca con una interface
+    fun insertMovieDetailsInDB(){
+        retrofit.movieDetails(1)?.enqueue(object : Callback<MovieDetails?>{
+            override fun onResponse(call: Call<MovieDetails?>, response: Response<MovieDetails?>) {
+                response.body()?.let {
+                    CoroutineScope(IO).launch {
+                        dao.insertMovieDetailsInDB(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<MovieDetails?>, t: Throwable) {
+                Toast.makeText(mContext,"Internet request failed",Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    fun getMovieDetailsFromDB(id:Int):LiveData<MovieDetails>{
+        return dao.getMovieDetailById(id)
     }
 
 }

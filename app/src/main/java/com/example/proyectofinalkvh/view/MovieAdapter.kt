@@ -1,17 +1,20 @@
 package com.example.proyectofinalkvh.view
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectofinalkvh.R
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
+import com.example.proyectofinalkvh.model.dataclass.moviepopular.Result
 import com.example.proyectofinalkvh.model.retrofit.IMAGE_BASE_URL
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_viewholder.view.*
 
 
-class MovieAdapter(var mDataset :MoviePopular): RecyclerView.Adapter<MovieAdapter.MovieHolder>(){
+class MovieAdapter(var mDataset :MoviePopular,var context: Context): RecyclerView.Adapter<MovieAdapter.MovieHolder>(){
 
     fun updateData(movie:MoviePopular){
         mDataset=movie
@@ -19,9 +22,16 @@ class MovieAdapter(var mDataset :MoviePopular): RecyclerView.Adapter<MovieAdapte
     }
 
     class MovieHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        var titleMovie= itemView.movie_title
-        var releaseDateMovie=itemView.movie_release
-        var posterMovie=itemView.movie_poster
+
+        fun bind(result:Result?,context: Context){
+            itemView.movie_title.text=result?.original_title
+            itemView.movie_release.text=result?.release_date
+            Picasso.get().load(IMAGE_BASE_URL+result?.poster_path).into(itemView.movie_poster)
+            itemView.setOnClickListener {
+                Toast.makeText(context,result?.id.toString(),Toast.LENGTH_LONG).show()
+
+            }
+        }
 
     }
 
@@ -30,10 +40,7 @@ class MovieAdapter(var mDataset :MoviePopular): RecyclerView.Adapter<MovieAdapte
     }
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
-        val movie= mDataset.results?.get(position)
-        holder.titleMovie.text= movie?.title
-        holder.releaseDateMovie.text=movie?.release_date
-        Picasso.get().load(IMAGE_BASE_URL+movie?.poster_path).into(holder.posterMovie)
+        holder.bind(mDataset.results?.get(position),context)
 
     }
 
@@ -44,5 +51,8 @@ class MovieAdapter(var mDataset :MoviePopular): RecyclerView.Adapter<MovieAdapte
             return 0
         }
 
+    }
+    interface IAdapterId{
+        fun idFromMovie(id:Int)
     }
 }
