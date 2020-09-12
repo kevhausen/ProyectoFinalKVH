@@ -18,14 +18,16 @@ class MovieAdapter(var mDataset :MoviePopular,var context: Context): RecyclerVie
     var idFromClick=0
 
 
-    fun updateData(movie:MoviePopular){
-        mDataset=movie
+    fun updateData(movie:MoviePopular?){
+        if (movie != null) {
+            mDataset= movie
+        }
         notifyDataSetChanged()
     }
 
     class MovieHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         fun bind(result:Result?, contexta: Context){
-            itemView.movie_title.text=result?.original_title
+            itemView.movie_title.text=result?.title
             itemView.movie_release.text=result?.release_date
             Picasso.get().load(IMAGE_BASE_URL+result?.poster_path).into(itemView.movie_poster)
 

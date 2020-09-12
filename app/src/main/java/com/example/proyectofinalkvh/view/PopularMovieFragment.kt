@@ -37,6 +37,7 @@ class PopularMovieFragment : Fragment(),MovieAdapter.IAdapterId {
         super.onCreate(savedInstanceState)
         movieVM=ViewModelProvider(activity!!).get(MovieVM::class.java)
         mAdapter= MovieAdapter(MoviePopular(0,null,0,0),mContext)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -47,6 +48,8 @@ class PopularMovieFragment : Fragment(),MovieAdapter.IAdapterId {
         super.onViewCreated(view, savedInstanceState)
         movieVM.getPopularMovies().observe(viewLifecycleOwner,{
             //aca dice que "it must not be null", lo decia igual antes cuando no tenia los typeconverter
+            //aca tambien la primera vez que se inicia la aplicacion, se cae "it must not be null", pero cuando comento la linea 51,luego inicio, luego descomento y vuelvo a iniciar, la cuestion funciona
+            //TAMBIEN LO ARRREGLE, habia que hacer un "null check" en el metodo updateData del adapter
             mAdapter.updateData(it)
             Log.d("kevin","en PopularMovieFragment $it")
         })

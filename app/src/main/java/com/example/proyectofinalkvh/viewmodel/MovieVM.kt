@@ -15,7 +15,7 @@ class MovieVM(application: Application):AndroidViewModel(application) {
         loadDBData()
     }
 
-    private fun loadDBData(){
+    fun loadDBData(){
         repository.insertWebDataToDB()
     }
 

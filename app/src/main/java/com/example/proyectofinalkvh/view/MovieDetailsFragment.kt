@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.example.proyectofinalkvh.R
 import com.example.proyectofinalkvh.model.dataclass.moviedetails.MovieDetails
+import com.example.proyectofinalkvh.model.retrofit.IMAGE_BASE_URL
 import com.example.proyectofinalkvh.viewmodel.MovieVM
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details.view.*
 
@@ -49,12 +51,8 @@ class MovieDetailsFragment : Fragment() {
             null,
             null,
             null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
+            null,null
+
         )
 
 
@@ -68,10 +66,12 @@ class MovieDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         movieVM.cacheDetailData(param1?.toIntOrNull()!!)
         movieVM.getMovieDetailsById(param1?.toIntOrNull()!!).observe(viewLifecycleOwner, {
-            //movieDetails=it
+            updateDetails(it)
             Log.d("kevin", "moviedetailDB $it")
+            title_detail.text = movieDetails.original_title
+            Picasso.get().load(IMAGE_BASE_URL+movieDetails.backdrop_path).into(poster_detail)
         })
-        title_detail.text = movieDetails.original_title
+
 
     }
 
@@ -84,5 +84,10 @@ class MovieDetailsFragment : Fragment() {
 
                 }
             }
+    }
+    fun updateDetails(movie:MovieDetails?){
+        if(movie!=null){
+            movieDetails=movie
+        }
     }
 }

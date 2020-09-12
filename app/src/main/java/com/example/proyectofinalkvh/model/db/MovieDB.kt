@@ -9,7 +9,7 @@ import com.example.proyectofinalkvh.model.dataclass.moviepopular.ResultConverter
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.StringListConverter
 
 
-@Database(entities = [MoviePopular::class,MovieDetails::class],version=10)
+@Database(entities = [MoviePopular::class,MovieDetails::class],version=15)
 @TypeConverters(
     StringListConverter::class,
     ResultConverter::class,

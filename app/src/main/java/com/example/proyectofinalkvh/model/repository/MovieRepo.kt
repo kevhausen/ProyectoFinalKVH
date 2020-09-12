@@ -50,6 +50,8 @@ class MovieRepo(context:Context) {
 
     //tengo que pasarle el id que llega al fragmentDetails desde el adapter
     //le llega la id, pero no se por que retrofit no hace la llamada. el throwable del onfailure me dice que le llega "vote_average" en ves de la id, y eso es mentira
+    //DESPUES DE TRES HORAS CON EL ERROR DE ARRIBA, lo que decia del vote_average era verdad, el problema no era la id que le llegaba sino, que el vote_average en el pojo estaba como "Int"
+    //cuando en realidad es un "Double". y el throwable lo dijo tode el rato jajja
     fun insertMovieDetailsInDB(id:Int){
         Log.d("kevin","antes de llamada a details $id")
         retrofit.movieDetails(id)?.enqueue(object : Callback<MovieDetails?>{
