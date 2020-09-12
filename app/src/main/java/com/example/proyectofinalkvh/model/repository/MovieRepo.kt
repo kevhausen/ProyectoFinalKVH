@@ -26,12 +26,13 @@ class MovieRepo(context:Context) {
     private val db=MovieDB.getMovieDB(context)
     private val dao=db.daoPopularMovie()
 
-    fun InsertWebDataToDB(){
+    fun insertWebDataToDB(){
         retrofit.moviePopular().enqueue(object : Callback<MoviePopular>{
             override fun onResponse(call: Call<MoviePopular>, response: Response<MoviePopular>) {
                 response.body()?.let {
                     CoroutineScope(IO).launch {
                         dao.insertPopularMoviesInDB(it)
+                        Log.d("kevin","llega de internet ${it}")
                     }
                 }
             }
@@ -46,19 +47,24 @@ class MovieRepo(context:Context) {
         return dao.getPopularMoviesFromDB()
     }
 
-    //TODO el id viene al hacerle click al recycler del fragment, parece que se manda para aca con una interface
-    fun insertMovieDetailsInDB(){
-        retrofit.movieDetails(1)?.enqueue(object : Callback<MovieDetails?>{
+
+    //tengo que pasarle el id que llega al fragmentDetails desde el adapter
+    //le llega la id, pero no se por que retrofit no hace la llamada. el throwable del onfailure me dice que le llega "vote_average" en ves de la id, y eso es mentira
+    fun insertMovieDetailsInDB(id:Int){
+        Log.d("kevin","antes de llamada a details $id")
+        retrofit.movieDetails(id)?.enqueue(object : Callback<MovieDetails?>{
             override fun onResponse(call: Call<MovieDetails?>, response: Response<MovieDetails?>) {
                 response.body()?.let {
                     CoroutineScope(IO).launch {
                         dao.insertMovieDetailsInDB(it)
+                        Log.d("kevin","llega details de internet ${it}")
                     }
                 }
             }
 
             override fun onFailure(call: Call<MovieDetails?>, t: Throwable) {
-                Toast.makeText(mContext,"Internet request failed",Toast.LENGTH_LONG).show()
+                Log.d("kevin","Internet Request Failed $t")
+                Log.d("kevin",id.toString())
             }
         })
     }

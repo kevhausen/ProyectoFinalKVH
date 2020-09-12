@@ -3,19 +3,21 @@ package com.example.proyectofinalkvh.model.db
 import android.content.Context
 import androidx.room.*
 import com.example.proyectofinalkvh.model.dataclass.moviedetails.*
+import com.example.proyectofinalkvh.model.dataclass.moviepopular.IntListConverter
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.ResultConverter
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.StringListConverter
 
 
-@Database(entities = [MoviePopular::class,MovieDetails::class],version=8)
+@Database(entities = [MoviePopular::class,MovieDetails::class],version=10)
 @TypeConverters(
     StringListConverter::class,
     ResultConverter::class,
     GenreConverter::class,
     ProductionCompanyConverter::class,
     ProductionCountryConverter::class,
-    SpokenLanguageConverter::class)
+    SpokenLanguageConverter::class,
+IntListConverter::class)
 abstract class MovieDB:RoomDatabase() {
 abstract fun daoPopularMovie():MovieDAO
     companion object{

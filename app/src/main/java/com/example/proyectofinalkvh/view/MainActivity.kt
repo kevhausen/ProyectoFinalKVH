@@ -3,6 +3,7 @@ package com.example.proyectofinalkvh.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.proyectofinalkvh.R
@@ -52,5 +53,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    }
+    fun changeFrag(fragment:Fragment){
+supportFragmentManager.beginTransaction().addToBackStack("").replace(R.id.frameLayout,fragment).commit()
     }
 }

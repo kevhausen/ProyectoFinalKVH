@@ -13,8 +13,10 @@ import com.example.proyectofinalkvh.model.retrofit.IMAGE_BASE_URL
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_viewholder.view.*
 
-
+var ida=0
 class MovieAdapter(var mDataset :MoviePopular,var context: Context): RecyclerView.Adapter<MovieAdapter.MovieHolder>(){
+    var idFromClick=0
+
 
     fun updateData(movie:MoviePopular){
         mDataset=movie
@@ -22,17 +24,20 @@ class MovieAdapter(var mDataset :MoviePopular,var context: Context): RecyclerVie
     }
 
     class MovieHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-
-        fun bind(result:Result?,context: Context){
+        fun bind(result:Result?, contexta: Context){
             itemView.movie_title.text=result?.original_title
             itemView.movie_release.text=result?.release_date
             Picasso.get().load(IMAGE_BASE_URL+result?.poster_path).into(itemView.movie_poster)
-            itemView.setOnClickListener {
-                Toast.makeText(context,result?.id.toString(),Toast.LENGTH_LONG).show()
 
+            itemView.setOnClickListener {
+                Toast.makeText(contexta,result?.id.toString(),Toast.LENGTH_LONG).show()
+                (contexta as MainActivity).supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.frameLayout,MovieDetailsFragment.newInstance(result?.id.toString()))
+                    .addToBackStack("popular_fragment")
+                    .commit()
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
@@ -55,4 +60,5 @@ class MovieAdapter(var mDataset :MoviePopular,var context: Context): RecyclerVie
     interface IAdapterId{
         fun idFromMovie(id:Int)
     }
+
 }

@@ -1,5 +1,6 @@
 package com.example.proyectofinalkvh.view
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -9,17 +10,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.proyectofinalkvh.R
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
 import com.example.proyectofinalkvh.viewmodel.MovieVM
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_popular_movie.*
 
-class PopularMovieFragment : Fragment() {
+class PopularMovieFragment : Fragment(),MovieAdapter.IAdapterId {
     private lateinit var movieVM: MovieVM
     private lateinit var mContext: Context
     private lateinit var mAdapter:MovieAdapter
+    private var idObtained=0
+
+    override fun idFromMovie(id: Int){
+        Log.d("kevin fragment",id.toString())
+        //aqui llega el activity nulo, por eso se cae
+        //(activity as MainActivity).changeFrag(MovieDetailsFragment.newInstance(id.toString(),""))
+        //activity!!.supportFragmentManager.beginTransaction().replace(R.id.frameLayout,MovieDetailsFragment.newInstance(idObtained.toString(),"")).commit()
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +45,16 @@ class PopularMovieFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        movieVM.getPopularMovies().observe(this,{
+        movieVM.getPopularMovies().observe(viewLifecycleOwner,{
+            //aca dice que "it must not be null", lo decia igual antes cuando no tenia los typeconverter
             mAdapter.updateData(it)
+            Log.d("kevin","en PopularMovieFragment $it")
         })
         popular_recycler.adapter=mAdapter
         popular_recycler.layoutManager= GridLayoutManager(activity,3)
-    }
 
+
+    }
     companion object {
         @JvmStatic
         fun newInstance(context: Context) =
@@ -47,4 +62,8 @@ class PopularMovieFragment : Fragment() {
                 mContext=context
             }
     }
+
+
+
+
 }

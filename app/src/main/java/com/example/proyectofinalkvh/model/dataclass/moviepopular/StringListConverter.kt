@@ -13,12 +13,5 @@ class StringListConverter {
         return stringList.joinToString(separator = ",")
     }
 
-    @TypeConverter
-    fun toString(list: List<Int>): String? {
-        var genreIds = ""
-        for (i in list) {
-            genreIds += ",$i"
-        }
-        return genreIds
-    }
+
 }
