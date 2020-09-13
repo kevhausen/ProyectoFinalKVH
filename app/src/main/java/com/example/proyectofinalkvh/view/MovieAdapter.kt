@@ -13,9 +13,9 @@ import com.example.proyectofinalkvh.model.retrofit.IMAGE_BASE_URL
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_viewholder.view.*
 
-var ida=0
+
 class MovieAdapter(var mDataset :MoviePopular,var context: Context): RecyclerView.Adapter<MovieAdapter.MovieHolder>(){
-    var idFromClick=0
+
 
 
     fun updateData(movie:MoviePopular?){
