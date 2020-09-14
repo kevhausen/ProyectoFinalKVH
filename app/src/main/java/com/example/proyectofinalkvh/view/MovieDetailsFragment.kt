@@ -1,11 +1,12 @@
 package com.example.proyectofinalkvh.view
 
-import android.graphics.Movie
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.proyectofinalkvh.R
@@ -18,7 +19,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_movie_details.*
-
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -33,10 +33,6 @@ class MovieDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-
-
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
         }
@@ -64,45 +60,30 @@ class MovieDetailsFragment : Fragment() {
 
         )
         movieVideos= MovieVideos(null,null)
-
-
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_movie_details, container, false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-
         //MOVIE DETAILS
         movieVM.cacheDetailData(param1?.toIntOrNull()!!)
         movieVM.getMovieDetailsById(param1?.toIntOrNull()!!).observe(viewLifecycleOwner, { it ->
             updateDetails(it)
-            //Log.d("kevin", "moviedetailDB $it")
-
             //TODO ESTOS TODAVIA NO SE COMO SACARLOS DEL OBSERVE, AFUERA NO FUNCIONAN
             fun setString(stringResource: Int, movieDetail: String?): String {
                 return context?.resources?.getString(stringResource, movieDetail).toString()
             }
-
             Picasso.get().load(IMAGE_BASE_URL + movieDetails.backdrop_path).into(poster_detail)
-
-            title_detail.text = setString(R.string.title, movieDetails.title)
-
+            title_detail.text=setString(R.string.title, movieDetails.title)
             if (movieDetails.original_title != movieDetails.title) {
                 original_title_detail.visibility = View.VISIBLE
-                original_title_detail.text = setString(
-                    R.string.original_title,
-                    movieDetails.original_title
-                )
+                original_title_detail.text = setString(R.string.original_title, movieDetails.original_title)
             }
+
             //sacando solamente el genero desde la lista Genres
             val genresList = movieDetails.genres
             val onlyGenres = mutableListOf<String>()
@@ -112,7 +93,6 @@ class MovieDetailsFragment : Fragment() {
                 }
                 genre_detail.text = setString(R.string.genres, onlyGenres.toString())
             }
-
             release_date_detail.text = setString(R.string.release_date, movieDetails.release_date)
             if (movieDetails.tagline == "") {
                 tagline_detail.visibility = View.GONE
@@ -133,7 +113,6 @@ class MovieDetailsFragment : Fragment() {
                 }
                 spoken_language_detail.text=onlySpokenLanguage.toString()
             }*/
-
             if (movieDetails.original_language != "en") {
                 original_language_detail.visibility = View.VISIBLE
                 original_language_detail.text = setString(
@@ -150,43 +129,42 @@ class MovieDetailsFragment : Fragment() {
                 revenue_detail.visibility = View.GONE
             }
             revenue_detail.text = setString(R.string.revenue, movieDetails.revenue.toString())
-            //video_details.text=movieDetails.video.toString()
             trailer_button.setOnClickListener {
                 movieVM.cacheVideoData(param1?.toIntOrNull()!!)
-                movieVM.getMovieVideosById(param1?.toIntOrNull()!!).observe(viewLifecycleOwner,{
+                movieVM.getMovieVideosById(param1?.toIntOrNull()!!).observe(viewLifecycleOwner, {
                     updateVideos(it)
-                    Log.d("kevin","viewmodel en fragment $it")
+                    Log.d("kevin", "viewmodel en fragment $it")
                     val youTubePlayerView: YouTubePlayerView = youtube_player_view
                     lifecycle.addObserver(youTubePlayerView)
-                    youTubePlayerView.visibility=View.VISIBLE
-
-
-                    youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-                        override fun onReady(youTubePlayer: YouTubePlayer) {
-                            val videoId = "01ON04GCwKs"
-                            youTubePlayer.loadVideo(videoId, 0f)
+                    youTubePlayerView.visibility = View.VISIBLE
+                    val vidResults = movieVideos.results
+                    val videos = hashMapOf<String, String>()
+                    if (vidResults != null) {
+                        for (result in vidResults) {
+                            videos.put(result?.type!!, result.key!!)
                         }
-                    })
+                    }
+
+                    if (videos.contains("Trailer")){
+                        youTubePlayerView.addYouTubePlayerListener(object :
+                            AbstractYouTubePlayerListener() {
+                            override fun onReady(youTubePlayer: YouTubePlayer) {
+                                youTubePlayer.loadVideo(videos["Trailer"]!!, 0f)
+                            }
+                        })
+                }
                 })
             }
 
-
         })
 
-        //MOVIE VIDEO
-
-
-
-
     }
-
     companion object {
         @JvmStatic
         fun newInstance(id: String?) =
             MovieDetailsFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, id)
-
                 }
             }
     }
