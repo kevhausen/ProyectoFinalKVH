@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import com.example.proyectofinalkvh.model.dataclass.moviedetails.MovieDetails
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
+import com.example.proyectofinalkvh.model.dataclass.movievideos.MovieVideos
 import com.example.proyectofinalkvh.model.db.MovieDB
 import com.example.proyectofinalkvh.model.retrofit.RetrofitClient
 import kotlinx.coroutines.CoroutineScope
@@ -32,7 +33,6 @@ class MovieRepo(context:Context) {
                 response.body()?.let {
                     CoroutineScope(IO).launch {
                         dao.insertPopularMoviesInDB(it)
-                        Log.d("kevin","llega de internet ${it}")
                     }
                 }
             }
@@ -53,26 +53,46 @@ class MovieRepo(context:Context) {
     //DESPUES DE TRES HORAS CON EL ERROR DE ARRIBA, lo que decia del vote_average era verdad, el problema no era la id que le llegaba sino, que el vote_average en el pojo estaba como "Int"
     //cuando en realidad es un "Double". y el throwable lo dijo tode el rato jajja
     fun insertMovieDetailsInDB(id:Int){
-        Log.d("kevin","antes de llamada a details $id")
         retrofit.movieDetails(id)?.enqueue(object : Callback<MovieDetails?>{
             override fun onResponse(call: Call<MovieDetails?>, response: Response<MovieDetails?>) {
                 response.body()?.let {
                     CoroutineScope(IO).launch {
                         dao.insertMovieDetailsInDB(it)
-                        Log.d("kevin","llega details de internet ${it}")
                     }
                 }
             }
 
             override fun onFailure(call: Call<MovieDetails?>, t: Throwable) {
                 Log.d("kevin","Internet Request Failed $t")
-                Log.d("kevin",id.toString())
             }
         })
     }
 
     fun getMovieDetailsFromDB(id:Int):LiveData<MovieDetails>{
         return dao.getMovieDetailById(id)
+    }
+
+    //MOVIE VIDEOS
+    fun insertMovieVideosIntoDB(id:Int){
+        retrofit.movieVideos(id)?.enqueue(object : Callback<MovieVideos?>{
+            override fun onResponse(call: Call<MovieVideos?>, response: Response<MovieVideos?>) {
+                response.body()?.let {
+                    CoroutineScope(IO).launch {
+                        dao.insertMovieVideosInDB(it)
+                        Log.d("kevin","llega videos de internet ${it}")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<MovieVideos?>, t: Throwable) {
+                Log.d("kevin","Internet Request Failed $t")
+            }
+
+        })
+
+    }
+    fun getMovieVideosFromDB(id:Int):LiveData<MovieVideos>{
+        return dao.getMovieVideosById(id)
     }
 
 }

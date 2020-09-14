@@ -1,5 +1,6 @@
 package com.example.proyectofinalkvh.view
 
+import android.graphics.Movie
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.proyectofinalkvh.R
 import com.example.proyectofinalkvh.model.dataclass.moviedetails.MovieDetails
+import com.example.proyectofinalkvh.model.dataclass.movievideos.MovieVideos
 import com.example.proyectofinalkvh.model.retrofit.IMAGE_BASE_URL
 import com.example.proyectofinalkvh.viewmodel.MovieVM
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -26,6 +28,7 @@ class MovieDetailsFragment : Fragment() {
     private var param2: String? = null
     private lateinit var movieVM: MovieVM
     private lateinit var movieDetails: MovieDetails
+    private lateinit var movieVideos: MovieVideos
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +39,6 @@ class MovieDetailsFragment : Fragment() {
 
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
-            Log.d("kevin", "en arguments $param1")
         }
         movieVM = ViewModelProvider(activity!!).get(MovieVM::class.java)
         movieDetails = MovieDetails(
@@ -61,6 +63,7 @@ class MovieDetailsFragment : Fragment() {
             null, null, null, null, null, null, null
 
         )
+        movieVideos= MovieVideos(null,null)
 
 
     }
@@ -76,21 +79,13 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val youTubePlayerView: YouTubePlayerView = youtube_player_view
-        lifecycle.addObserver(youTubePlayerView)
-
-        youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-            override fun onReady(youTubePlayer: YouTubePlayer) {
-                val videoId = "S0Q4gqBUs7c"
-                youTubePlayer.loadVideo(videoId, 0f)
-            }
-        })
 
 
+        //MOVIE DETAILS
         movieVM.cacheDetailData(param1?.toIntOrNull()!!)
-        movieVM.getMovieDetailsById(param1?.toIntOrNull()!!).observe(viewLifecycleOwner, {
+        movieVM.getMovieDetailsById(param1?.toIntOrNull()!!).observe(viewLifecycleOwner, { it ->
             updateDetails(it)
-            Log.d("kevin", "moviedetailDB $it")
+            //Log.d("kevin", "moviedetailDB $it")
 
             //TODO ESTOS TODAVIA NO SE COMO SACARLOS DEL OBSERVE, AFUERA NO FUNCIONAN
             fun setString(stringResource: Int, movieDetail: String?): String {
@@ -156,9 +151,30 @@ class MovieDetailsFragment : Fragment() {
             }
             revenue_detail.text = setString(R.string.revenue, movieDetails.revenue.toString())
             //video_details.text=movieDetails.video.toString()
+            trailer_button.setOnClickListener {
+                movieVM.cacheVideoData(param1?.toIntOrNull()!!)
+                movieVM.getMovieVideosById(param1?.toIntOrNull()!!).observe(viewLifecycleOwner,{
+                    updateVideos(it)
+                    Log.d("kevin","viewmodel en fragment $it")
+                    val youTubePlayerView: YouTubePlayerView = youtube_player_view
+                    lifecycle.addObserver(youTubePlayerView)
+                    youTubePlayerView.visibility=View.VISIBLE
+
+
+                    youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                        override fun onReady(youTubePlayer: YouTubePlayer) {
+                            val videoId = "01ON04GCwKs"
+                            youTubePlayer.loadVideo(videoId, 0f)
+                        }
+                    })
+                })
+            }
 
 
         })
+
+        //MOVIE VIDEO
+
 
 
 
@@ -177,6 +193,11 @@ class MovieDetailsFragment : Fragment() {
     fun updateDetails(movie: MovieDetails?){
         if(movie!=null){
             movieDetails=movie
+        }
+    }
+    fun updateVideos(videos:MovieVideos?){
+        if(videos!=null){
+            movieVideos=videos
         }
     }
 }

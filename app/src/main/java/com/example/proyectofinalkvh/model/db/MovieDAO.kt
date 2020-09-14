@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.proyectofinalkvh.model.dataclass.moviedetails.MovieDetails
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
+import com.example.proyectofinalkvh.model.dataclass.movievideos.MovieVideos
 
 @Dao
 interface MovieDAO {
@@ -24,5 +25,12 @@ interface MovieDAO {
 
     @Query("SELECT * FROM movie_details_table WHERE id =:idObtained")
     fun getMovieDetailById(idObtained:Int):LiveData<MovieDetails>
+
+    //MOVIE VIDEOS
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMovieVideosInDB(movieVideos: MovieVideos)
+
+    @Query("SELECT * FROM movie_videos_table WHERE id =:idObtained")
+    fun getMovieVideosById(idObtained: Int):LiveData<MovieVideos>
 
 }
