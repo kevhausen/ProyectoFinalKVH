@@ -16,9 +16,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_viewholder.view.*
 
 
-class MovieAdapter(var mDataset :MoviePopular,var context: Context): RecyclerView.Adapter<MovieAdapter.MovieHolder>(){
-
-
+class MovieAdapter(var mDataset :MoviePopular,var iAdapter: IAdapter): RecyclerView.Adapter<MovieAdapter.MovieHolder>(){
 
     fun updateData(movie:MoviePopular?){
         if (movie != null) {
@@ -27,21 +25,16 @@ class MovieAdapter(var mDataset :MoviePopular,var context: Context): RecyclerVie
         notifyDataSetChanged()
     }
 
-    class MovieHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    //INNER CLASS PARA QUE RECONOZCA LOS CONTRSUCTORES DE LA CLASE MAMA
+    inner class MovieHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-        fun bind(result:Result?, contexta: Context){
-
-
+        fun bind(result:Result?){
             itemView.movie_title.text=result?.title
             itemView.movie_release.text=result?.release_date
             Picasso.get().load(IMAGE_BASE_URL+result?.poster_path).into(itemView.movie_poster)
 
             itemView.setOnClickListener {
-                Toast.makeText(contexta,result?.id.toString(),Toast.LENGTH_LONG).show()
-
-                /*TODO el adapter deberia trabajar en solamente mostrar los datos del recycler,
-                   por lo que la linea de abajo deberia estar en la clase PopularMovieFragment(hay que enviarle el id de todas formas)*/
-                (contexta as MainActivity).initializeFragment(MovieDetailsFragment.newInstance(result?.id.toString()),"details_fragment")
+                iAdapter.idFromMovie(result?.id!!)
             }
         }
     }
@@ -52,7 +45,7 @@ class MovieAdapter(var mDataset :MoviePopular,var context: Context): RecyclerVie
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
 
-        holder.bind(mDataset.results?.get(position),context)
+        holder.bind(mDataset.results?.get(position))
 
     }
 
@@ -63,6 +56,9 @@ class MovieAdapter(var mDataset :MoviePopular,var context: Context): RecyclerVie
             return 0
         }
 
+    }
+    interface IAdapter{
+        fun idFromMovie(id:Int)
     }
 
 }

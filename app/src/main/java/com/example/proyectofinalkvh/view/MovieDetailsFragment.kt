@@ -1,13 +1,11 @@
 package com.example.proyectofinalkvh.view
 
-import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.text.*
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,23 +24,21 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_movie_details.*
-import org.w3c.dom.Text
 
 private const val ARG_PARAM1 = "param1"
 
 class MovieDetailsFragment : Fragment() {
-    private var param1: String? = null
+    private var param1: Int = -1
     private lateinit var movieVM: MovieVM
-    private lateinit var movieDetails: MovieDetails
-    private lateinit var movieVideos: MovieVideos
+    private var movieDetails:MovieDetails=MovieDetails()
+    private var movieVideos: MovieVideos=MovieVideos()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
+            param1 = it.getInt(ARG_PARAM1)
         }
         movieVM = ViewModelProvider(activity!!).get(MovieVM::class.java)
-        initObjects()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -52,20 +48,14 @@ class MovieDetailsFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //MOVIE DETAILS
-        movieVM.cacheDetailData(param1?.toIntOrNull()!!)
-        //TODO detailsFragment no encesita observar datos, por lo tanto , hay que recibir un objeto sin live data
-        movieVM.getMovieDetailsById(param1?.toIntOrNull()!!).observe(viewLifecycleOwner, {
+        //MOVIE DETAILS---MOVIE DETAILS---MOVIE DETAILS---MOVIE DETAILS---MOVIE DETAILS---MOVIE DETAILS---MOVIE DETAILS
+        movieVM.cacheDetailData(param1)
+        movieVM.getMovieDetailsById(param1).observe(viewLifecycleOwner, {
             updateDetails(it)
-            //TODO ESTOS TODAVIA NO SE COMO SACARLOS DEL OBSERVE, AFUERA NO FUNCIONAN
-
             Picasso.get().load(IMAGE_BASE_URL + movieDetails.backdrop_path).into(poster_detail)
 
-            //title_detail.text=Html.fromHtml(setString(R.string.title, movieDetails.title), FROM_HTML_MODE_LEGACY)
-
             title_detail.setString(R.string.title,movieDetails.title)
-
-
+            //si el titulo es diferente al titulo original, esto se hace visible (para peliculas de otro idioma)
             if (movieDetails.original_title != movieDetails.title) {
                 original_title_detail.visibility = View.VISIBLE
                 original_title_detail.setString(R.string.original_title,movieDetails.original_title)
@@ -83,13 +73,16 @@ class MovieDetailsFragment : Fragment() {
 
             release_date_detail.setString(R.string.release_date,movieDetails.release_date)
 
+            //aveces el tagline viene vacio
             if (movieDetails.tagline == "") {
                 tagline_detail.visibility = View.GONE
             }
+
             tagline_detail.text = movieDetails.tagline
             vote_average_detail.setString(R.string.rating,movieDetails.vote_average.toString())
             runtime_detail.setString(R.string.duration,movieDetails.runtime.toString())
 
+            //si el idioma original es distinto de ingles o nulo, se hace visible este textview
             if (movieDetails.original_language != "en" && movieDetails.original_language!=null) {
                 original_language_detail.visibility = View.VISIBLE
                 original_language_detail.setString(R.string.original_language,movieDetails.original_language)
@@ -98,46 +91,49 @@ class MovieDetailsFragment : Fragment() {
             if (movieDetails.budget == 0) {
                 budget_detail.visibility = View.GONE
             }
+
             budget_detail.setString(R.string.budget,movieDetails.budget.toString())
             overview_detail.setString(R.string.sinopsis,movieDetails.overview)
+
             if (movieDetails.revenue == 0) {
                 revenue_detail.visibility = View.GONE
             }
+
             revenue_detail.setString(R.string.revenue,movieDetails.revenue.toString())
 
-                movieVM.cacheVideoData(param1?.toIntOrNull()!!)
-                movieVM.getMovieVideosById(param1?.toIntOrNull()!!).observe(viewLifecycleOwner, {
-                    updateVideos(it)
-                    val youTubePlayerView: YouTubePlayerView = youtube_player_view
-                    lifecycle.addObserver(youTubePlayerView)
-                    youTubePlayerView.visibility = View.VISIBLE
-                    val vidResults = movieVideos.results
-                    val videos = hashMapOf<String, String>()
-                    if (vidResults != null) {
-                        for (result in vidResults) {
-                            videos.put(result?.type!!, result.key!!)
-                        }
-                    }
-                    if (videos.contains("Trailer")){
-                        youTubePlayerView.addYouTubePlayerListener(object :
-                            AbstractYouTubePlayerListener() {
-                            override fun onReady(youTubePlayer: YouTubePlayer) {
-                                youTubePlayer.loadVideo(videos["Trailer"]!!, 0f)
-                            }
-                        })
-                }
-                })
+            //MOVIE VIDEO---MOVIE VIDEO---MOVIE VIDEO---MOVIE VIDEO---MOVIE VIDEO---MOVIE VIDEO
+            movieVM.cacheVideoData(param1)
+            movieVM.getMovieVideosById(param1).observe(viewLifecycleOwner, {
+                updateVideos(it)
+                val youTubePlayerView: YouTubePlayerView = youtube_player_view
+                lifecycle.addObserver(youTubePlayerView)
+                youTubePlayerView.visibility = View.VISIBLE
 
+                val vidResults = movieVideos.results
+                val videos = hashMapOf<String, String>()
+                if (vidResults != null) {
+                    for (result in vidResults) {
+                        videos[result?.type!!] = result.key!!
+                    }
+                }
+                if (videos.contains("Trailer")){
+                    youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                        override fun onReady(youTubePlayer: YouTubePlayer) {
+                            youTubePlayer.loadVideo(videos["Trailer"]!!, 0f)
+                        }
+                    })
+                }
+            })
 
         })
 
     }
     companion object {
         @JvmStatic
-        fun newInstance(id: String?) =
+        fun newInstance(id: Int) =
             MovieDetailsFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, id)
+                    putInt(ARG_PARAM1, id)
                 }
             }
     }
@@ -151,30 +147,12 @@ class MovieDetailsFragment : Fragment() {
             movieVideos=videos
         }
     }
-    private fun initObjects(){
-        movieDetails = MovieDetails(
-            null, null, null,
-            null, null, null, null,
-            null, null, null, null, null,
-            null, null, null, null, null, null,
-            null, null, null, null, null, null, null
-        )
-        movieVideos= MovieVideos(null,null)
-    }
-
-    fun setString(stringResource: Int, movieDetail: String?):String? {
-        return context?.resources?.getString(stringResource,movieDetail)
-    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun TextView.setString(id:Int, movieDetail: String?){
         val txt=getString(id,movieDetail)
         this.text=Html.fromHtml(txt, FROM_HTML_MODE_LEGACY)
     }
-
-
-
-
     private fun Spannable.openTags(tags: Array<out Any>) {
         tags.forEach { tag ->
             setSpan(tag, 0, 0, Spannable.SPAN_MARK_MARK)
@@ -198,6 +176,7 @@ class MovieDetailsFragment : Fragment() {
             closeTags(tags)
         }
     }
+
     fun bold(vararg content: CharSequence): CharSequence = apply(content, StyleSpan(Typeface.BOLD))
     fun italic(vararg content: CharSequence): CharSequence = apply(content, StyleSpan(Typeface.ITALIC))
     fun color(color: Int, vararg content: CharSequence): CharSequence =
