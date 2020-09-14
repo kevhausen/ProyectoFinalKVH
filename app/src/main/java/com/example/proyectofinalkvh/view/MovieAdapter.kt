@@ -64,8 +64,5 @@ class MovieAdapter(var mDataset :MoviePopular,var context: Context): RecyclerVie
         }
 
     }
-    interface IAdapterId{
-        fun idFromMovie(id:Int)
-    }
 
 }

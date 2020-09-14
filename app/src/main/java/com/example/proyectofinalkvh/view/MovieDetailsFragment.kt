@@ -1,12 +1,19 @@
 package com.example.proyectofinalkvh.view
 
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.text.*
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.proyectofinalkvh.R
@@ -19,6 +26,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_movie_details.*
+import org.w3c.dom.Text
 
 private const val ARG_PARAM1 = "param1"
 
@@ -41,6 +49,7 @@ class MovieDetailsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_movie_details, container, false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //MOVIE DETAILS
@@ -51,10 +60,15 @@ class MovieDetailsFragment : Fragment() {
             //TODO ESTOS TODAVIA NO SE COMO SACARLOS DEL OBSERVE, AFUERA NO FUNCIONAN
 
             Picasso.get().load(IMAGE_BASE_URL + movieDetails.backdrop_path).into(poster_detail)
-            title_detail.text=setString(R.string.title, movieDetails.title)
+
+            //title_detail.text=Html.fromHtml(setString(R.string.title, movieDetails.title), FROM_HTML_MODE_LEGACY)
+
+            title_detail.setString(R.string.title,movieDetails.title)
+
+
             if (movieDetails.original_title != movieDetails.title) {
                 original_title_detail.visibility = View.VISIBLE
-                original_title_detail.text = setString(R.string.original_title, movieDetails.original_title)
+                original_title_detail.setString(R.string.original_title,movieDetails.original_title)
             }
 
             //sacando solamente el genero desde la lista Genres
@@ -64,43 +78,36 @@ class MovieDetailsFragment : Fragment() {
                 for (genre in genresList) {
                     onlyGenres.add(genre?.name!!)
                 }
-                genre_detail.text = setString(R.string.genres, onlyGenres.toString())
+                genre_detail.setString(R.string.genres,onlyGenres.toString())
             }
 
-            release_date_detail.text = setString(R.string.release_date, movieDetails.release_date)
+            release_date_detail.setString(R.string.release_date,movieDetails.release_date)
 
             if (movieDetails.tagline == "") {
                 tagline_detail.visibility = View.GONE
             }
             tagline_detail.text = movieDetails.tagline
-            vote_average_detail.text = setString(
-                R.string.rating,
-                movieDetails.vote_average.toString()
-            )
-            runtime_detail.text = setString(R.string.duration, movieDetails.runtime.toString())
+            vote_average_detail.setString(R.string.rating,movieDetails.vote_average.toString())
+            runtime_detail.setString(R.string.duration,movieDetails.runtime.toString())
 
             if (movieDetails.original_language != "en" && movieDetails.original_language!=null) {
                 original_language_detail.visibility = View.VISIBLE
-                original_language_detail.text = setString(
-                    R.string.original_language,
-                    movieDetails.original_language
-                )
+                original_language_detail.setString(R.string.original_language,movieDetails.original_language)
             }
 
             if (movieDetails.budget == 0) {
                 budget_detail.visibility = View.GONE
             }
-            budget_detail.text = setString(R.string.budget, movieDetails.budget.toString())
-            overview_detail.text = setString(R.string.sinopsis, movieDetails.overview)
+            budget_detail.setString(R.string.budget,movieDetails.budget.toString())
+            overview_detail.setString(R.string.sinopsis,movieDetails.overview)
             if (movieDetails.revenue == 0) {
                 revenue_detail.visibility = View.GONE
             }
-            revenue_detail.text = setString(R.string.revenue, movieDetails.revenue.toString())
+            revenue_detail.setString(R.string.revenue,movieDetails.revenue.toString())
 
                 movieVM.cacheVideoData(param1?.toIntOrNull()!!)
                 movieVM.getMovieVideosById(param1?.toIntOrNull()!!).observe(viewLifecycleOwner, {
                     updateVideos(it)
-                    Log.d("kevin", "viewmodel en fragment $it")
                     val youTubePlayerView: YouTubePlayerView = youtube_player_view
                     lifecycle.addObserver(youTubePlayerView)
                     youTubePlayerView.visibility = View.VISIBLE
@@ -154,7 +161,46 @@ class MovieDetailsFragment : Fragment() {
         )
         movieVideos= MovieVideos(null,null)
     }
-    fun setString(stringResource: Int, movieDetail: String?): String {
-        return context?.resources?.getString(stringResource, movieDetail).toString()
+
+    fun setString(stringResource: Int, movieDetail: String?):String? {
+        return context?.resources?.getString(stringResource,movieDetail)
     }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun TextView.setString(id:Int, movieDetail: String?){
+        val txt=getString(id,movieDetail)
+        this.text=Html.fromHtml(txt, FROM_HTML_MODE_LEGACY)
+    }
+
+
+
+
+    private fun Spannable.openTags(tags: Array<out Any>) {
+        tags.forEach { tag ->
+            setSpan(tag, 0, 0, Spannable.SPAN_MARK_MARK)
+        }
+    }
+    private fun Spannable.closeTags(tags: Array<out Any>) {
+        tags.forEach { tag ->
+            if (length > 0) {
+                setSpan(tag, 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            } else {
+                removeSpan(tag)
+            }
+        }
+    }
+    private fun apply(content: Array<out CharSequence>, vararg tags: Any): CharSequence {
+        return SpannableStringBuilder().apply {
+            openTags(tags)
+            content.forEach { charSequence ->
+                append(charSequence)
+            }
+            closeTags(tags)
+        }
+    }
+    fun bold(vararg content: CharSequence): CharSequence = apply(content, StyleSpan(Typeface.BOLD))
+    fun italic(vararg content: CharSequence): CharSequence = apply(content, StyleSpan(Typeface.ITALIC))
+    fun color(color: Int, vararg content: CharSequence): CharSequence =
+        apply(content, ForegroundColorSpan(color))
+
 }
