@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectofinalkvh.R
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.Result
 import com.example.proyectofinalkvh.model.retrofit.IMAGE_BASE_URL
+import com.example.proyectofinalkvh.viewmodel.MovieVM
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_viewholder.view.*
 
@@ -26,18 +28,20 @@ class MovieAdapter(var mDataset :MoviePopular,var context: Context): RecyclerVie
     }
 
     class MovieHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+
         fun bind(result:Result?, contexta: Context){
+
+
             itemView.movie_title.text=result?.title
             itemView.movie_release.text=result?.release_date
             Picasso.get().load(IMAGE_BASE_URL+result?.poster_path).into(itemView.movie_poster)
 
             itemView.setOnClickListener {
                 Toast.makeText(contexta,result?.id.toString(),Toast.LENGTH_LONG).show()
-                (contexta as MainActivity).supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.frameLayout,MovieDetailsFragment.newInstance(result?.id.toString()))
-                    .addToBackStack("popular_fragment")
-                    .commit()
+
+                /*TODO el adapter deberia trabajar en solamente mostrar los datos del recycler,
+                   por lo que la linea de abajo deberia estar en la clase PopularMovieFragment(hay que enviarle el id de todas formas)*/
+                (contexta as MainActivity).initializeFragment(MovieDetailsFragment.newInstance(result?.id.toString()),"details_fragment")
             }
         }
     }
@@ -47,6 +51,7 @@ class MovieAdapter(var mDataset :MoviePopular,var context: Context): RecyclerVie
     }
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
+
         holder.bind(mDataset.results?.get(position),context)
 
     }

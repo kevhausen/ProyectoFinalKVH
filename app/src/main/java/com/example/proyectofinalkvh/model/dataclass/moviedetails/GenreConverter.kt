@@ -1,7 +1,6 @@
 package com.example.proyectofinalkvh.model.dataclass.moviedetails
 
 import androidx.room.TypeConverter
-import com.example.proyectofinalkvh.model.dataclass.moviepopular.Result
 import com.google.gson.Gson
 
 class GenreConverter {

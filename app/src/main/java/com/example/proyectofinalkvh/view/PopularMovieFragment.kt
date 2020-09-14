@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.proyectofinalkvh.R
@@ -19,25 +18,16 @@ import com.example.proyectofinalkvh.viewmodel.MovieVM
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_popular_movie.*
 
-class PopularMovieFragment : Fragment(),MovieAdapter.IAdapterId {
+class PopularMovieFragment : Fragment() {
     private lateinit var movieVM: MovieVM
     private lateinit var mContext: Context
     private lateinit var mAdapter:MovieAdapter
-    private var idObtained=0
-
-    override fun idFromMovie(id: Int){
-        Log.d("kevin fragment",id.toString())
-        //aqui llega el activity nulo, por eso se cae
-        //(activity as MainActivity).changeFrag(MovieDetailsFragment.newInstance(id.toString(),""))
-        //activity!!.supportFragmentManager.beginTransaction().replace(R.id.frameLayout,MovieDetailsFragment.newInstance(idObtained.toString(),"")).commit()
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         movieVM=ViewModelProvider(activity!!).get(MovieVM::class.java)
         mAdapter= MovieAdapter(MoviePopular(0,null,0,0),mContext)
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
