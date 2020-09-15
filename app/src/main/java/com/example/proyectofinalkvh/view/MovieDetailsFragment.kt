@@ -1,11 +1,8 @@
 package com.example.proyectofinalkvh.view
 
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.text.*
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +49,7 @@ class MovieDetailsFragment : Fragment() {
         movieVM.cacheDetailData(param1)
         movieVM.getMovieDetailsById(param1).observe(viewLifecycleOwner, {
             updateDetails(it)
-            Picasso.get().load(IMAGE_BASE_URL + movieDetails.backdrop_path).into(poster_detail)
+            Picasso.get().load(IMAGE_BASE_URL + movieDetails.backdrop_path).placeholder(R.drawable.ic_launcher_foreground).into(poster_detail)
 
             title_detail.setString(R.string.title,movieDetails.title)
             //si el titulo es diferente al titulo original, esto se hace visible (para peliculas de otro idioma)
@@ -154,33 +151,5 @@ class MovieDetailsFragment : Fragment() {
         val txt=getString(id,movieDetail)
         this.text=Html.fromHtml(txt, FROM_HTML_MODE_LEGACY)
     }
-    private fun Spannable.openTags(tags: Array<out Any>) {
-        tags.forEach { tag ->
-            setSpan(tag, 0, 0, Spannable.SPAN_MARK_MARK)
-        }
-    }
-    private fun Spannable.closeTags(tags: Array<out Any>) {
-        tags.forEach { tag ->
-            if (length > 0) {
-                setSpan(tag, 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            } else {
-                removeSpan(tag)
-            }
-        }
-    }
-    private fun apply(content: Array<out CharSequence>, vararg tags: Any): CharSequence {
-        return SpannableStringBuilder().apply {
-            openTags(tags)
-            content.forEach { charSequence ->
-                append(charSequence)
-            }
-            closeTags(tags)
-        }
-    }
-
-    fun bold(vararg content: CharSequence): CharSequence = apply(content, StyleSpan(Typeface.BOLD))
-    fun italic(vararg content: CharSequence): CharSequence = apply(content, StyleSpan(Typeface.ITALIC))
-    fun color(color: Int, vararg content: CharSequence): CharSequence =
-        apply(content, ForegroundColorSpan(color))
 
 }

@@ -1,17 +1,14 @@
 package com.example.proyectofinalkvh.view
 
-import android.content.Context
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectofinalkvh.R
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.Result
 import com.example.proyectofinalkvh.model.retrofit.IMAGE_BASE_URL
-import com.example.proyectofinalkvh.viewmodel.MovieVM
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_viewholder.view.*
 
@@ -31,7 +28,7 @@ class MovieAdapter(var mDataset :MoviePopular,var iAdapter: IAdapter): RecyclerV
         fun bind(result:Result?){
             itemView.movie_title.text=result?.title
             itemView.movie_release.text=result?.release_date
-            Picasso.get().load(IMAGE_BASE_URL+result?.poster_path).into(itemView.movie_poster)
+            Picasso.get().load(IMAGE_BASE_URL+result?.poster_path).placeholder(R.drawable.ic_launcher_foreground).into(itemView.movie_poster)
 
             itemView.setOnClickListener {
                 iAdapter.idFromMovie(result?.id!!)
