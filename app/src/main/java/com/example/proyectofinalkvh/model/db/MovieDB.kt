@@ -11,7 +11,7 @@ import com.example.proyectofinalkvh.model.dataclass.movievideos.MovieVideos
 import com.example.proyectofinalkvh.model.dataclass.movievideos.VideoResultConverter
 
 
-@Database(entities = [MoviePopular::class,MovieDetails::class,MovieVideos::class],version=17)
+@Database(entities = [MoviePopular::class,MovieDetails::class,MovieVideos::class],version=1)
 @TypeConverters(
     StringListConverter::class,
     ResultConverter::class,
@@ -20,7 +20,7 @@ import com.example.proyectofinalkvh.model.dataclass.movievideos.VideoResultConve
     ProductionCountryConverter::class,
     SpokenLanguageConverter::class,
     IntListConverter::class,
-VideoResultConverter::class)
+    VideoResultConverter::class)
 abstract class MovieDB:RoomDatabase() {
 abstract fun daoPopularMovie():MovieDAO
     companion object{
@@ -34,7 +34,7 @@ abstract fun daoPopularMovie():MovieDAO
             }
             synchronized(this){
                 val newInstance = Room.databaseBuilder(context.applicationContext,MovieDB::class.java,"movies_db")
-                    .fallbackToDestructiveMigrationFrom(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26).build()
+                    .build()
                 INSTANCE=newInstance
                 return newInstance
             }

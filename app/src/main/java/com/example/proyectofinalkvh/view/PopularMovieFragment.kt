@@ -2,12 +2,10 @@ package com.example.proyectofinalkvh.view
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.proyectofinalkvh.R
@@ -17,14 +15,12 @@ import kotlinx.android.synthetic.main.fragment_popular_movie.*
 
 class PopularMovieFragment : Fragment(),MovieAdapter.IAdapter {
     private lateinit var movieVM: MovieVM
-    private lateinit var mContext: Context
     private lateinit var mAdapter:MovieAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         movieVM=ViewModelProvider(activity!!).get(MovieVM::class.java)
-
         mAdapter= MovieAdapter(MoviePopular(),this)
     }
 
@@ -35,11 +31,7 @@ class PopularMovieFragment : Fragment(),MovieAdapter.IAdapter {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         movieVM.getPopularMovies().observe(viewLifecycleOwner,{
-            //aca dice que "it must not be null", lo decia igual antes cuando no tenia los typeconverter
-            //aca tambien la primera vez que se inicia la aplicacion, se cae "it must not be null", pero cuando comento la linea 51,luego inicio, luego descomento y vuelvo a iniciar, la cuestion funciona
-            //TAMBIEN LO ARRREGLE, habia que hacer un "null check" en el metodo updateData del adapter
             mAdapter.updateData(it)
-            Log.d("kevin","en PopularMovieFragment $it")
         })
         popular_recycler.adapter=mAdapter
         popular_recycler.layoutManager= GridLayoutManager(activity,3)
@@ -48,14 +40,10 @@ class PopularMovieFragment : Fragment(),MovieAdapter.IAdapter {
     }
     companion object {
         @JvmStatic
-        fun newInstance(context: Context) =
-            PopularMovieFragment().apply {
-                mContext=context
-            }
+        fun newInstance() = PopularMovieFragment()
     }
 
     override fun idFromMovie(id: Int) {
-        Toast.makeText(context,"estoy en adapter $id",Toast.LENGTH_SHORT).show()
         activity?.supportFragmentManager!!.beginTransaction().addToBackStack("popular").replace(R.id.frameLayout,MovieDetailsFragment.newInstance(id)).commit()
     }
 

@@ -15,13 +15,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MovieVM(application: Application):AndroidViewModel(application) {
     private val repository=MovieRepo(application)
 
+        //tendria que llegar el numero de paginas con una interface o llamar este metodo directamente desde el fragment
+
 
 
     init {
-        loadDBData()
+        cachePopularData()
     }
-
-    fun loadDBData(){
+    fun cachePopularData(){
         repository.insertWebDataToDB()
     }
 

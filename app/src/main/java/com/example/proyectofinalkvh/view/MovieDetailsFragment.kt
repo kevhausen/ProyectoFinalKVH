@@ -109,6 +109,7 @@ class MovieDetailsFragment : Fragment() {
                 lifecycle.addObserver(youTubePlayerView)
                 youTubePlayerView.visibility = View.VISIBLE
 
+                //se extrae solamente la url de los trailers
                 val vidResults = movieVideos.results
                 val videos = hashMapOf<String, String>()
                 if (vidResults != null) {
