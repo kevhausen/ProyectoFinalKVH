@@ -6,6 +6,7 @@ import com.example.proyectofinalkvh.model.dataclass.movievideos.MovieVideos
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface MovieAPI {
 
@@ -13,7 +14,7 @@ interface MovieAPI {
     fun movieDetails(@Path("movie_id") movieId: Int): Call<MovieDetails?>?
 
     @GET("movie/popular")
-    fun moviePopular():Call<MoviePopular>
+    fun moviePopular(@Query("page")page:Int):Call<MoviePopular>
 
     @GET("movie/{movie_id}/videos")
     fun movieVideos(@Path("movie_id") movieId: Int): Call<MovieVideos?>?

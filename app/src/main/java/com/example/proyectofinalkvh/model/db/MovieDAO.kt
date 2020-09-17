@@ -17,7 +17,7 @@ interface MovieDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPopularMoviesResultInDB(listResult:List<Result>) //moviepopular ya entrega una lista con peliculas, por lo tanto no es necesario poner list<moviepopular>
 
-    @Query("SELECT * FROM result_table")
+    @Query("SELECT * FROM result_table ORDER by popularity")
     fun getPopularMoviesResultsFromDB():LiveData<List<Result>>
 
     //MOVIE DETAILS

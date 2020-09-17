@@ -15,11 +15,9 @@ class MovieVM(application: Application):AndroidViewModel(application) {
         //tendria que llegar el numero de paginas con una interface o llamar este metodo directamente desde el fragment
 
 
-    init {
-        cachePopularData()
-    }
-    fun cachePopularData(){
-        repository.insertWebDataToDB()
+
+    fun cachePopularData(page:Int){
+        repository.insertWebDataToDB(page)
     }
 
     fun getPopularMovies():LiveData<List<Result>>{

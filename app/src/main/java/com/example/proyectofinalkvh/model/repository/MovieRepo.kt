@@ -28,8 +28,8 @@ class MovieRepo(context:Context) {
     private val db=MovieDB.getMovieDB(context)
     private val dao=db.daoPopularMovie()
 
-    fun insertWebDataToDB(){
-        retrofit.moviePopular().enqueue(object : Callback<MoviePopular>{
+    fun insertWebDataToDB(page:Int){
+        retrofit.moviePopular(page).enqueue(object : Callback<MoviePopular>{
             override fun onResponse(call: Call<MoviePopular>, response: Response<MoviePopular>) {
                 response.body()?.let {
                     CoroutineScope(IO).launch {
