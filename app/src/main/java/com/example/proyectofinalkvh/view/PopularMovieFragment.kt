@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.proyectofinalkvh.R
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
+import com.example.proyectofinalkvh.model.dataclass.moviepopular.Result
 import com.example.proyectofinalkvh.viewmodel.MovieVM
 import kotlinx.android.synthetic.main.fragment_popular_movie.*
 
@@ -24,7 +25,7 @@ class PopularMovieFragment : Fragment(),MovieAdapter.IAdapter {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         movieVM=ViewModelProvider(activity!!).get(MovieVM::class.java)
-        mAdapter= MovieAdapter(emptyList(),this)
+        mAdapter= MovieAdapter(mutableListOf(),this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -33,7 +34,7 @@ class PopularMovieFragment : Fragment(),MovieAdapter.IAdapter {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        movieVM.cachePopularData(page)
+        movieVM.cachePopularData(page).also { Log.d("kevin","el primer cache $page") }
 
 
         nested_scrollview.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
@@ -52,7 +53,7 @@ class PopularMovieFragment : Fragment(),MovieAdapter.IAdapter {
             }
         })
         movieVM.getPopularMovies().observe(viewLifecycleOwner,{
-            mAdapter.updateData(it)
+            mAdapter.updateData(it as MutableList<Result>)
         })
         //logica que suma pagina
         //cuando hago el llamado, se va a guardar

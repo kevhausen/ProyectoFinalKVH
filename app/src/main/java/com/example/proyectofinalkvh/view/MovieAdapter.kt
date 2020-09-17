@@ -13,9 +13,10 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_viewholder.view.*
 
 
-class MovieAdapter(var mDataset :List<Result>,var iAdapter: IAdapter): RecyclerView.Adapter<MovieAdapter.MovieHolder>(){
+class MovieAdapter(var mDataset :MutableList<Result>,var iAdapter: IAdapter): RecyclerView.Adapter<MovieAdapter.MovieHolder>(){
 
-    fun updateData(movie:List<Result>?){
+    
+    fun updateData(movie:MutableList<Result>?){
         if (movie != null) {
             mDataset= movie
         }
@@ -24,7 +25,6 @@ class MovieAdapter(var mDataset :List<Result>,var iAdapter: IAdapter): RecyclerV
 
     //INNER CLASS PARA QUE RECONOZCA LOS CONTRSUCTORES DE LA CLASE MAMA
     inner class MovieHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-
         fun bind(result:Result?){
             itemView.movie_title.text=result?.title
             itemView.movie_release.text=result?.release_date
