@@ -5,13 +5,14 @@ import androidx.room.*
 import com.example.proyectofinalkvh.model.dataclass.moviedetails.*
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.IntListConverter
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
+import com.example.proyectofinalkvh.model.dataclass.moviepopular.Result
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.ResultConverter
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.StringListConverter
 import com.example.proyectofinalkvh.model.dataclass.movievideos.MovieVideos
 import com.example.proyectofinalkvh.model.dataclass.movievideos.VideoResultConverter
 
 
-@Database(entities = [MoviePopular::class,MovieDetails::class,MovieVideos::class],version=1)
+@Database(entities = [Result::class,MovieDetails::class,MovieVideos::class],version=1)
 @TypeConverters(
     StringListConverter::class,
     ResultConverter::class,

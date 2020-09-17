@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import com.example.proyectofinalkvh.model.dataclass.moviedetails.MovieDetails
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
+import com.example.proyectofinalkvh.model.dataclass.moviepopular.Result
 import com.example.proyectofinalkvh.model.dataclass.movievideos.MovieVideos
 import com.example.proyectofinalkvh.model.db.MovieDB
 import com.example.proyectofinalkvh.model.retrofit.RetrofitClient
@@ -32,7 +33,7 @@ class MovieRepo(context:Context) {
             override fun onResponse(call: Call<MoviePopular>, response: Response<MoviePopular>) {
                 response.body()?.let {
                     CoroutineScope(IO).launch {
-                        dao.insertPopularMoviesInDB(it)
+                        it.results?.let { it1 -> dao.insertPopularMoviesResultInDB(it1) }
                     }
                 }
             }
@@ -43,8 +44,8 @@ class MovieRepo(context:Context) {
         })
     }
 
-    fun getPopularMoviesFromDB():LiveData<MoviePopular>{
-        return dao.getPopularMoviesFromDB()
+    fun getPopularMoviesFromDB():LiveData<List<Result>>{
+        return dao.getPopularMoviesResultsFromDB()
     }
 
 

@@ -20,7 +20,7 @@ class PopularMovieFragment : Fragment(),MovieAdapter.IAdapter {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         movieVM=ViewModelProvider(activity!!).get(MovieVM::class.java)
-        mAdapter= MovieAdapter(MoviePopular(),this)
+        mAdapter= MovieAdapter(emptyList(),this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,6 +32,8 @@ class PopularMovieFragment : Fragment(),MovieAdapter.IAdapter {
         movieVM.getPopularMovies().observe(viewLifecycleOwner,{
             mAdapter.updateData(it)
         })
+        //logica que suma pagina
+        //cuando hago el llamado, se va a guardar
         popular_recycler.adapter=mAdapter
         popular_recycler.layoutManager= GridLayoutManager(activity,3)
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.proyectofinalkvh.model.dataclass.moviedetails.MovieDetails
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
+import com.example.proyectofinalkvh.model.dataclass.moviepopular.Result
 import com.example.proyectofinalkvh.model.dataclass.movievideos.MovieVideos
 import com.example.proyectofinalkvh.model.repository.MovieRepo
 
@@ -21,7 +22,7 @@ class MovieVM(application: Application):AndroidViewModel(application) {
         repository.insertWebDataToDB()
     }
 
-    fun getPopularMovies():LiveData<MoviePopular>{
+    fun getPopularMovies():LiveData<List<Result>>{
         return repository.getPopularMoviesFromDB()
     }
 

@@ -13,9 +13,9 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_viewholder.view.*
 
 
-class MovieAdapter(var mDataset :MoviePopular,var iAdapter: IAdapter): RecyclerView.Adapter<MovieAdapter.MovieHolder>(){
+class MovieAdapter(var mDataset :List<Result>,var iAdapter: IAdapter): RecyclerView.Adapter<MovieAdapter.MovieHolder>(){
 
-    fun updateData(movie:MoviePopular?){
+    fun updateData(movie:List<Result>?){
         if (movie != null) {
             mDataset= movie
         }
@@ -42,18 +42,13 @@ class MovieAdapter(var mDataset :MoviePopular,var iAdapter: IAdapter): RecyclerV
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
 
-        holder.bind(mDataset.results?.get(position))
+        holder.bind(mDataset[position])
 
     }
 
-    override fun getItemCount(): Int {
-        if(mDataset.results!=null){
-            return mDataset.results!!.size
-        }else{
-            return 0
-        }
+    //resultado del metodo por inferencia
+    override fun getItemCount()= mDataset.size
 
-    }
     interface IAdapter{
         fun idFromMovie(id:Int)
     }

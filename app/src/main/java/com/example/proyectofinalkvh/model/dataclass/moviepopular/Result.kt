@@ -1,14 +1,13 @@
 package com.example.proyectofinalkvh.model.dataclass.moviepopular
 
-import androidx.room.Embedded
-import androidx.room.TypeConverter
-import androidx.room.TypeConverters
+import androidx.room.*
 
+@Entity(tableName = "result_table")
 data class Result(
     val adult: Boolean?,
     val backdrop_path: String?,
-    @TypeConverters(IntListConverter::class)val genre_ids: ArrayList<Int?>?,
-    val id: Int?,
+    val genre_ids: List<Int?>?,
+    @PrimaryKey val id: Int?,
     val original_language: String?,
     val original_title: String?,
     val overview: String?,
