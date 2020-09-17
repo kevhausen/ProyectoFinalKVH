@@ -17,12 +17,7 @@
     <string name="sinopsis">&lt;b>Synopsis:&lt;/b> \n%1$s</string>
     <string name="revenue">&lt;b>Revenue:&lt;/b> $%1$s</string>
     <string name="original_language">&lt;b>Original Language:&lt;/b> %1$s</string>
-
-
-
-
-
-
+    <string name="end_of_list">End Of List</string>
 
 
 </resources>
