@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.movie_viewholder.view.*
 
 class MovieAdapter(var mDataset :MutableList<Result>,var iAdapter: IAdapter): RecyclerView.Adapter<MovieAdapter.MovieHolder>(){
 
-    
+
     fun updateData(movie:MutableList<Result>?){
         if (movie != null) {
             mDataset= movie

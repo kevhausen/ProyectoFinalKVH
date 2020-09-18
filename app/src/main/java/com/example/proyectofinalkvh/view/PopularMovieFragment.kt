@@ -14,6 +14,10 @@ import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.Result
 import com.example.proyectofinalkvh.viewmodel.MovieVM
 import kotlinx.android.synthetic.main.fragment_popular_movie.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 
 class PopularMovieFragment : Fragment(),MovieAdapter.IAdapter {
     private lateinit var movieVM: MovieVM
