@@ -98,6 +98,7 @@ class MovieRepo(context:Context) {
     }
     //MOVIE FAVORITES
 
+    //no se si pasarle un moviefavorite directamente, o pasarle un conjunto de moviePopular y movieDetails
     fun insertFavoriteMovieIntoDB(movieFavorite: MovieFavorite){
         CoroutineScope(IO).launch {
             dao.insertFavoriteMovie(movieFavorite)

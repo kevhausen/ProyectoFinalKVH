@@ -41,6 +41,5 @@ abstract fun daoPopularMovie():MovieDAO
                 return newInstance
             }
         }
-
     }
 }
