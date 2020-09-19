@@ -12,10 +12,10 @@
     <string name="rating">&lt;b>Rating:&lt;/b> %1$s</string>
     <string name="duration">&lt;b>Duration:&lt;/b> %1$s minutes</string>
     <string name="spoken_languages">&lt;b>Spoken Languages:&lt;/b> %1$s</string>
-    <string name="budget">&lt;b>Budget:&lt;/b> $%1$s</string>
+    <string name="budget">&lt;b>Budget:&lt;/b> %1$s</string>
     <string name="trailer">Trailer</string>
     <string name="sinopsis">&lt;b>Synopsis:&lt;/b> \n%1$s</string>
-    <string name="revenue">&lt;b>Revenue:&lt;/b> $%1$s</string>
+    <string name="revenue">&lt;b>Revenue:&lt;/b> %1$s</string>
     <string name="original_language">&lt;b>Original Language:&lt;/b> %1$s</string>
     <string name="end_of_list">End Of List</string>
 

@@ -3,6 +3,7 @@ package com.example.proyectofinalkvh.model.db
 import android.content.Context
 import androidx.room.*
 import com.example.proyectofinalkvh.model.dataclass.moviedetails.*
+import com.example.proyectofinalkvh.model.dataclass.moviefavorite.MovieFavorite
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.IntListConverter
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.Result
@@ -12,7 +13,7 @@ import com.example.proyectofinalkvh.model.dataclass.movievideos.MovieVideos
 import com.example.proyectofinalkvh.model.dataclass.movievideos.VideoResultConverter
 
 
-@Database(entities = [Result::class,MovieDetails::class,MovieVideos::class],version=1)
+@Database(entities = [Result::class,MovieDetails::class,MovieVideos::class,MovieFavorite::class],version=1)
 @TypeConverters(
     StringListConverter::class,
     ResultConverter::class,

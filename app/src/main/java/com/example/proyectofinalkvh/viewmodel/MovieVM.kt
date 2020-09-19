@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.proyectofinalkvh.model.dataclass.moviedetails.MovieDetails
+import com.example.proyectofinalkvh.model.dataclass.moviefavorite.MovieFavorite
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.Result
 import com.example.proyectofinalkvh.model.dataclass.movievideos.MovieVideos
@@ -40,5 +41,14 @@ class MovieVM(application: Application):AndroidViewModel(application) {
 
     fun cacheVideoData(id:Int){
         repository.insertMovieVideosIntoDB(id)
+    }
+
+    //MOVIE FAVORITE
+    fun saveFavoriteMovieIntoLocalDB(movieFav:MovieFavorite){
+        repository.insertFavoriteMovieIntoDB(movieFav)
+    }
+
+    fun getAllFavoriteMoviesFromDB():LiveData<List<MovieFavorite>>{
+        return repository.getFavoriteMovies()
     }
 }

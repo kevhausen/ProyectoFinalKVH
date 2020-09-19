@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.proyectofinalkvh.model.dataclass.moviedetails.MovieDetails
+import com.example.proyectofinalkvh.model.dataclass.moviefavorite.MovieFavorite
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.Result
 import com.example.proyectofinalkvh.model.dataclass.movievideos.MovieVideos
@@ -33,5 +34,12 @@ interface MovieDAO {
 
     @Query("SELECT * FROM movie_videos_table WHERE id =:idObtained")
     fun getMovieVideosById(idObtained: Int):LiveData<MovieVideos>
+
+    //MOVIE FAVORITES
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFavoriteMovie(movie:MovieFavorite)
+
+    @Query("SELECT * FROM movie_favorite_table ORDER BY popularity DESC")
+    fun getFavoriteMovies():LiveData<List<MovieFavorite>>
 
 }

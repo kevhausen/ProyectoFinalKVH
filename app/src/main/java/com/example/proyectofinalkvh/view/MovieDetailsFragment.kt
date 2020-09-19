@@ -21,6 +21,8 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_movie_details.*
+import java.text.NumberFormat
+import java.util.*
 
 private const val ARG_PARAM1 = "param1"
 
@@ -49,9 +51,11 @@ class MovieDetailsFragment : Fragment() {
         movieVM.cacheDetailData(param1)
         movieVM.getMovieDetailsById(param1).observe(viewLifecycleOwner, {
             updateDetails(it)
+            //IMAGE OF MOVIE IN DETAIL
             Picasso.get().load(IMAGE_BASE_URL + movieDetails.backdrop_path).placeholder(R.drawable.ic_launcher_foreground).into(poster_detail)
 
             title_detail.setString(R.string.title,movieDetails.title)
+
             //si el titulo es diferente al titulo original, esto se hace visible (para peliculas de otro idioma)
             if (movieDetails.original_title != movieDetails.title) {
                 original_title_detail.visibility = View.VISIBLE
@@ -85,18 +89,24 @@ class MovieDetailsFragment : Fragment() {
                 original_language_detail.setString(R.string.original_language,movieDetails.original_language)
             }
 
+
+
+            //BUDGET AND REVENUE: para formatear Int a US dolars
+            val formatCurrency = NumberFormat.getCurrencyInstance(Locale.US)
             if (movieDetails.budget == 0) {
                 budget_detail.visibility = View.GONE
             }
-
-            budget_detail.setString(R.string.budget,movieDetails.budget.toString())
-            overview_detail.setString(R.string.sinopsis,movieDetails.overview)
+            val formattedBudget=formatCurrency.format(movieDetails.budget).toString()
+            budget_detail.setString(R.string.budget,formattedBudget)
 
             if (movieDetails.revenue == 0) {
                 revenue_detail.visibility = View.GONE
             }
+            val formattedRevenue=formatCurrency.format(movieDetails.revenue).toString()
+            revenue_detail.setString(R.string.revenue,formattedRevenue)
 
-            revenue_detail.setString(R.string.revenue,movieDetails.revenue.toString())
+            //SYNOPSIS TEXT
+            overview_detail.setString(R.string.sinopsis,movieDetails.overview)
 
             //MOVIE VIDEO---MOVIE VIDEO---MOVIE VIDEO---MOVIE VIDEO---MOVIE VIDEO---MOVIE VIDEO
             movieVM.cacheVideoData(param1)

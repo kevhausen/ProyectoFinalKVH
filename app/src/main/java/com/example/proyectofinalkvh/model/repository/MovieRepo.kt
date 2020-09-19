@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import com.example.proyectofinalkvh.model.dataclass.moviedetails.MovieDetails
+import com.example.proyectofinalkvh.model.dataclass.moviefavorite.MovieFavorite
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.Result
 import com.example.proyectofinalkvh.model.dataclass.movievideos.MovieVideos
@@ -94,6 +95,17 @@ class MovieRepo(context:Context) {
     }
     fun getMovieVideosFromDB(id:Int):LiveData<MovieVideos>{
         return dao.getMovieVideosById(id)
+    }
+    //MOVIE FAVORITES
+
+    fun insertFavoriteMovieIntoDB(movieFavorite: MovieFavorite){
+        CoroutineScope(IO).launch {
+            dao.insertFavoriteMovie(movieFavorite)
+        }
+    }
+
+    fun getFavoriteMovies():LiveData<List<MovieFavorite>>{
+        return dao.getFavoriteMovies()
     }
 
 }
