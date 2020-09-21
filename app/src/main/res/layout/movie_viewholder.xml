@@ -27,19 +27,38 @@
             android:id="@+id/movie_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="15sp"
             android:layout_marginTop="2dp"
             android:layout_marginStart="4dp"
             android:maxLines="1"
+            android:text="titulo"
             android:ellipsize="end"/>
-        <TextView
-            android:id="@+id/movie_release"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:layout_marginTop="2dp"
-            android:layout_marginStart="4dp"
-            android:maxLength="4"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/movie_release"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="2010"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="4dp"
+                android:maxLength="4"/>
+
+            <ImageView
+                android:id="@+id/movie_star_favorite"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/star"
+                android:visibility="gone"
+                 />
+
+
+        </RelativeLayout>
+
     </LinearLayout>
 
 

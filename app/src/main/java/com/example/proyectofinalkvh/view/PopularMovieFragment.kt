@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 class PopularMovieFragment : Fragment(),MovieAdapter.IAdapter {
     private lateinit var movieVM: MovieVM
     private lateinit var mAdapter:MovieAdapter
+    //pagina inicial
     var page=1
 
 
@@ -42,8 +43,7 @@ class PopularMovieFragment : Fragment(),MovieAdapter.IAdapter {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        movieVM.cachePopularData(page).also { Log.d("kevin","el primer cache $page") }
-
+        movieVM.cachePopularData(page)
 
         nested_scrollview.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             if (v != null) {

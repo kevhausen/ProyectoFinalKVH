@@ -36,6 +36,7 @@ class MovieAdapter(var mDataset :MutableList<Result>,var iAdapter: IAdapter): Re
             itemView.setOnLongClickListener {
                 iAdapter.idFromLonglick(result?.id!!)//se le envia el id al fragment para que este se la pase al viewmodel y el viewmodel guarde ese id como favorito
                 Toast.makeText(itemView.context,"${result.title?.take(10)} added as favorite",Toast.LENGTH_SHORT).show()
+                itemView.movie_star_favorite.visibility=View.VISIBLE
                 //TODO cuando se agrege un mono a favorito, que se muestre una estrellita
                 true
             }

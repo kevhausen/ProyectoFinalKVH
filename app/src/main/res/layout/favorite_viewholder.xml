@@ -9,7 +9,21 @@
     android:layout_marginEnd="4dp"
 
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <ProgressBar
+        android:id="@+id/favorite_movie_background_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"/>
+    <TextView
+        android:id="@+id/favorite_movie_failed_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/load_failed"
+        android:layout_gravity="end"
+        android:visibility="gone"/>
+
     <LinearLayout
+        android:id="@+id/favorite_movie_layout_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -35,6 +49,7 @@
                 android:layout_marginTop="2dp"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:textColor="@color/colorRoyalBlack"
                 android:text="Iron Man 3"
                 android:textSize="40sp" />
 
@@ -43,6 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:textColor="@color/colorRoyalBlack"
                 android:layout_marginTop="2dp"
                 android:maxLength="4"
                 android:text="2020 05 10"
@@ -52,6 +68,7 @@
                 android:id="@+id/favorite_movie_popularity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorRoyalBlack"
                 android:layout_marginStart="4dp"
                 android:text="2004.4" />
 
@@ -59,12 +76,14 @@
                 android:id="@+id/favorite_movie_vote_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorRoyalBlack"
                 android:layout_marginStart="4dp"
                 android:text="123" />
 
             <TextView
                 android:id="@+id/favorite_movie_rating"
                 android:layout_width="match_parent"
+                android:textColor="@color/colorRoyalBlack"
                 android:layout_marginStart="4dp"
                 android:layout_height="wrap_content" />
 
