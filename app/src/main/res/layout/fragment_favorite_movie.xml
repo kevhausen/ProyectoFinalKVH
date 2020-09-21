@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.FavoriteMovieFragment"
     android:orientation="vertical">
 
@@ -18,8 +18,16 @@
         android:layout_gravity="center"
         android:gravity="center" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.tsuryo.swipeablerv.SwipeableRecyclerView
         android:id="@+id/movie_favorites_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:leftBgColor="@color/colorWhiteRed"
+        app:leftImage="@drawable/delete"
+        app:leftText="Delete"
+        app:rightBgColor="@color/colorWhiteRed"
+        app:rightImage="@drawable/delete"
+        app:rightText="Delete"
+        app:textColor="@android:color/white"
+        app:textSize="20sp" />
 </LinearLayout>

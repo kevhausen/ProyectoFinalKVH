@@ -111,5 +111,12 @@ class MovieRepo(context:Context) {
             dao.insertFavoriteMovie(favGoingTo)
         }
     }
+    fun deleteFavoriteMovieById(id:Int){
+        //la que esta en cache en movie_favorite_table, se elimina por id. para eso tengo que obtener el id del elemento swipeado desde el adapter
+        CoroutineScope(IO).launch {
+            val movie=dao.getCachedFavoriteMovieById(id)
+            dao.deleteFavoriteMovie(movie)
+        }
+    }
 
 }

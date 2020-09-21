@@ -2,16 +2,20 @@ package com.example.proyectofinalkvh.view
 
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.proyectofinalkvh.R
+import com.example.proyectofinalkvh.model.dataclass.moviefavorite.MovieFavorite
 import com.example.proyectofinalkvh.viewmodel.MovieVM
+import com.tsuryo.swipeablerv.SwipeLeftRightCallback
+import com.tsuryo.swipeablerv.SwipeableRecyclerView
 import kotlinx.android.synthetic.main.fragment_favorite_movie.*
+
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -32,7 +36,11 @@ class FavoriteMovieFragment : Fragment() {
         favAdapter=FavoriteMovieAdapter()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_favorite_movie, container, false)
     }
 
@@ -40,11 +48,26 @@ class FavoriteMovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         movieVM.getAllFavoriteMoviesFromDB()
-        movieVM.getAllFavoriteMoviesFromDB().observe(viewLifecycleOwner,{
-            favAdapter.setData(it)
+        movieVM.getAllFavoriteMoviesFromDB().observe(viewLifecycleOwner, {
+            favAdapter.setData(it as MutableList<MovieFavorite>)
+
         })
         movie_favorites_recycler.adapter=favAdapter
         movie_favorites_recycler.layoutManager=LinearLayoutManager(activity)
+        movie_favorites_recycler.setListener(object : SwipeLeftRightCallback.Listener {
+            override fun onSwipedLeft(position: Int) {
+                //favAdapter.deleteData(position)
+                movieVM.deleteFavMovie(favAdapter.getFavMovie(position).id!!)
+                //movieVM.deleteFavMovie(favAdapter.getFavMovie(position)) hacer esto en repositorio
+            }
+
+            override fun onSwipedRight(position: Int) {
+                movieVM.deleteFavMovie(favAdapter.getFavMovie(position).id!!)
+                //movieVM.deleteFavMovie(favAdapter.getFavMovie(position)) hacer esto en repositorio
+            }
+        })
+
+
     }
 
     companion object {

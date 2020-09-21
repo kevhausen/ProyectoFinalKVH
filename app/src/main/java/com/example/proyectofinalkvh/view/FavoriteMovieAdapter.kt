@@ -18,12 +18,20 @@ import kotlinx.android.synthetic.main.favorite_viewholder.view.*
 
 
 class FavoriteMovieAdapter :RecyclerView.Adapter<FavoriteMovieAdapter.FavoriteHolder>() {
-    private var mDataset:List<MovieFavorite> = emptyList()
+    private var mDataset:MutableList<MovieFavorite> = mutableListOf()
 
-    fun setData(favList:List<MovieFavorite>){
+    fun setData(favList:MutableList<MovieFavorite>){
         mDataset=favList
         notifyDataSetChanged()
     }
+    fun deleteData(position: Int){
+        mDataset.removeAt(position)
+        notifyDataSetChanged()
+    }
+    fun getFavMovie(position: Int):MovieFavorite{
+        return mDataset[position]
+    }
+
 
 
     inner class FavoriteHolder(itemView: View):RecyclerView.ViewHolder(itemView) {

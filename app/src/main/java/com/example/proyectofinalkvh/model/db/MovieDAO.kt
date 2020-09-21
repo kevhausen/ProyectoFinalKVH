@@ -1,10 +1,7 @@
 package com.example.proyectofinalkvh.model.db
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.proyectofinalkvh.model.dataclass.moviedetails.MovieDetails
 import com.example.proyectofinalkvh.model.dataclass.moviefavorite.MovieFavorite
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
@@ -44,5 +41,11 @@ interface MovieDAO {
 
     @Query("SELECT * FROM result_table WHERE id =:idObtained")
     fun getCachedMovieById(idObtained: Int):Result
+
+    @Query("SELECT * FROM movie_favorite_table WHERE id =:idObtained")
+    fun getCachedFavoriteMovieById(idObtained: Int):MovieFavorite
+
+    @Delete
+    suspend fun deleteFavoriteMovie(favDeleted:MovieFavorite)
 
 }

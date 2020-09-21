@@ -52,4 +52,7 @@ class MovieVM(application: Application):AndroidViewModel(application) {
     fun saveFavoriteById(id: Int){
         return repository.saveFavoriteById(id)
     }
+    fun deleteFavMovie(id:Int){
+        repository.deleteFavoriteMovieById(id)
+    }
 }
