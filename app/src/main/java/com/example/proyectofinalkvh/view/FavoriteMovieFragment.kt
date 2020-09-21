@@ -54,16 +54,15 @@ class FavoriteMovieFragment : Fragment() {
         })
         movie_favorites_recycler.adapter=favAdapter
         movie_favorites_recycler.layoutManager=LinearLayoutManager(activity)
+
+        //swipe left or right to delete favorite
         movie_favorites_recycler.setListener(object : SwipeLeftRightCallback.Listener {
             override fun onSwipedLeft(position: Int) {
-                //favAdapter.deleteData(position)
                 movieVM.deleteFavMovie(favAdapter.getFavMovie(position).id!!)
-                //movieVM.deleteFavMovie(favAdapter.getFavMovie(position)) hacer esto en repositorio
             }
 
             override fun onSwipedRight(position: Int) {
                 movieVM.deleteFavMovie(favAdapter.getFavMovie(position).id!!)
-                //movieVM.deleteFavMovie(favAdapter.getFavMovie(position)) hacer esto en repositorio
             }
         })
 
