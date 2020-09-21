@@ -99,14 +99,17 @@ class MovieRepo(context:Context) {
     //MOVIE FAVORITES
 
     //no se si pasarle un moviefavorite directamente, o pasarle un conjunto de moviePopular y movieDetails
-    fun insertFavoriteMovieIntoDB(movieFavorite: MovieFavorite){
-        CoroutineScope(IO).launch {
-            dao.insertFavoriteMovie(movieFavorite)
-        }
-    }
 
     fun getFavoriteMovies():LiveData<List<MovieFavorite>>{
         return dao.getFavoriteMovies()
+    }
+
+    fun saveFavoriteById(id:Int){
+        CoroutineScope(IO).launch {
+            val movie=dao.getCachedMovieById(id)
+            val favGoingTo=MovieFavorite(movie.backdrop_path,movie.id,movie.popularity,movie.poster_path,movie.release_date,movie.title,movie.vote_average,movie.vote_count)
+            dao.insertFavoriteMovie(favGoingTo)
+        }
     }
 
 }

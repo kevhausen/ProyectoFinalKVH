@@ -42,4 +42,7 @@ interface MovieDAO {
     @Query("SELECT * FROM movie_favorite_table ORDER BY popularity DESC")
     fun getFavoriteMovies():LiveData<List<MovieFavorite>>
 
+    @Query("SELECT * FROM result_table WHERE id =:idObtained")
+    fun getCachedMovieById(idObtained: Int):Result
+
 }

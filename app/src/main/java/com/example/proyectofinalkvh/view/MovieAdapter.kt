@@ -4,6 +4,7 @@ package com.example.proyectofinalkvh.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectofinalkvh.R
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
@@ -29,9 +30,14 @@ class MovieAdapter(var mDataset :MutableList<Result>,var iAdapter: IAdapter): Re
             itemView.movie_title.text=result?.title
             itemView.movie_release.text=result?.release_date
             Picasso.get().load(IMAGE_BASE_URL+result?.poster_path).placeholder(R.drawable.ic_launcher_foreground).into(itemView.movie_poster)
-
             itemView.setOnClickListener {
                 iAdapter.idFromMovie(result?.id!!)
+            }
+            itemView.setOnLongClickListener {
+                iAdapter.idFromLonglick(result?.id!!)//se le envia el id al fragment para que este se la pase al viewmodel y el viewmodel guarde ese id como favorito
+                Toast.makeText(itemView.context,"${result.title?.take(10)} added as favorite",Toast.LENGTH_SHORT).show()
+                //TODO cuando se agrege un mono a favorito, que se muestre una estrellita
+                true
             }
         }
     }
@@ -51,6 +57,7 @@ class MovieAdapter(var mDataset :MutableList<Result>,var iAdapter: IAdapter): Re
 
     interface IAdapter{
         fun idFromMovie(id:Int)
+        fun idFromLonglick(id:Int)
     }
 
 }

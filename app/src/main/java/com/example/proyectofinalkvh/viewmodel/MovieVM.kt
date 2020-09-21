@@ -44,11 +44,12 @@ class MovieVM(application: Application):AndroidViewModel(application) {
     }
 
     //MOVIE FAVORITE
-    fun saveFavoriteMovieIntoLocalDB(movieFav:MovieFavorite){
-        repository.insertFavoriteMovieIntoDB(movieFav)
-    }
 
     fun getAllFavoriteMoviesFromDB():LiveData<List<MovieFavorite>>{
         return repository.getFavoriteMovies()
+    }
+
+    fun saveFavoriteById(id: Int){
+        return repository.saveFavoriteById(id)
     }
 }

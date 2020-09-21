@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/popular_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/popular_title"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:gravity="center"/>
+
+
+<androidx.core.widget.NestedScrollView
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:id="@+id/nested_scrollview">
@@ -28,3 +42,4 @@
             android:visibility="gone"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
+</LinearLayout>

@@ -10,9 +10,11 @@ import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.proyectofinalkvh.R
+import com.example.proyectofinalkvh.model.dataclass.moviefavorite.MovieFavorite
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.MoviePopular
 import com.example.proyectofinalkvh.model.dataclass.moviepopular.Result
 import com.example.proyectofinalkvh.viewmodel.MovieVM
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_popular_movie.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -30,6 +32,7 @@ class PopularMovieFragment : Fragment(),MovieAdapter.IAdapter {
         super.onCreate(savedInstanceState)
         movieVM=ViewModelProvider(activity!!).get(MovieVM::class.java)
         mAdapter= MovieAdapter(mutableListOf(),this)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -38,6 +41,7 @@ class PopularMovieFragment : Fragment(),MovieAdapter.IAdapter {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         movieVM.cachePopularData(page).also { Log.d("kevin","el primer cache $page") }
 
 
@@ -71,8 +75,14 @@ class PopularMovieFragment : Fragment(),MovieAdapter.IAdapter {
         fun newInstance() = PopularMovieFragment()
     }
 
+    //click muestra detalles
     override fun idFromMovie(id: Int) {
         activity?.supportFragmentManager!!.beginTransaction().addToBackStack("popular").replace(R.id.frameLayout,MovieDetailsFragment.newInstance(id)).commit()
+    }
+
+    //longclick agrega a favoritos
+    override fun idFromLonglick(id: Int) {
+        movieVM.saveFavoriteById(id)
     }
 
 

@@ -12,10 +12,11 @@ class MainActivity : AppCompatActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
             initializeFragment(R.id.frameLayout,PopularMovieFragment.newInstance())
 
             favorites_button.setOnClickListener {
-                //inicializar fragmento favoritos
+                initializeFragment(FavoriteMovieFragment.newInstance(),"favorite_fragment")
             }
 
     }
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
 
     fun initializeFragment(fragmentId:Int,fragment:Fragment,backStackName:String){
+
         supportFragmentManager.beginTransaction().addToBackStack(backStackName).replace(fragmentId,fragment).commit()
     }
     fun initializeFragment(fragmentId:Int,fragment:Fragment){
@@ -33,4 +35,8 @@ class MainActivity : AppCompatActivity() {
     fun initializeFragment(fragment: Fragment,backStackName: String){
         supportFragmentManager.beginTransaction().addToBackStack(backStackName).replace(R.id.frameLayout,fragment).commit()
     }
+    fun initializeFragment(fragment: Fragment){
+        supportFragmentManager.beginTransaction().replace(R.id.frameLayout,fragment).commit()
+    }
+
 }

@@ -2,7 +2,10 @@
 <resources>
     <string name="app_name">ProyectoFinalKVH</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="popular_movies_right_now">Popular Movies Right Now</string>
+
+    //STICKY TITLES
+    <string name="popular_title">Popular Movies Right Now</string>
+    <string name="favorite_title">Favorites</string>
 
     //MOVIE DETAILS
     <string name="title">&lt;b>Title:&lt;/b> %1$s</string>
@@ -18,6 +21,11 @@
     <string name="revenue">&lt;b>Revenue:&lt;/b> %1$s</string>
     <string name="original_language">&lt;b>Original Language:&lt;/b> %1$s</string>
     <string name="end_of_list">End Of List</string>
+
+    //MOVIE FAVORITES
+    <string name="favorite_rating">&lt;b>Rating:&lt;/b> %1$s/10</string>
+    <string name="favorite_popularity">&lt;b>Popularity:&lt;/b> %1$s/3000</string>
+    <string name="favorite_vote_count">&lt;b>Vote Count:&lt;/b> %1$s</string>
 
 
 </resources>
